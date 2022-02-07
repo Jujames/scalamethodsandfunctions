@@ -2,7 +2,7 @@ package com.pluralsight.methodsandfunctions.ImplementingMethods
 
 import com.pluralsight.methodsandfunctions.ImplementingFunctions.StockRecord
 
-object NamedAndDefaultArguments extends App {
+object CurriedFunctionWithDefaultArguments extends App {
 
   val readFinanceData = () => {
     val source = io.Source.fromFile("src/main/resources/stockMarketData.csv")
@@ -16,7 +16,10 @@ object NamedAndDefaultArguments extends App {
 
   val records = readFinanceData()
 
-  def getStockPriceDetails(date: String, ticker: String, priceType: String):
+ /** It is possible for us to specify default values for input arguments
+  *  with curried function as well. The date and the ticker have default values */
+
+  def getStockPriceDetails(date: String = "11-06-2020") (ticker: String = "GOOG")( priceType: String):
   (String, String, Float) = {
 
     println(s"Accessing records for $date")
@@ -35,19 +38,13 @@ object NamedAndDefaultArguments extends App {
       case "low" => record.low
     }
 
-    /** Returns a Tuple */
     (record.date, record.ticker, price)
   }
-
-   /** Positional argument values are
-    *  assigned based on position or
-    *  order in which arguments are specified and
-    *  has to be returned in order */
-  println(getStockPriceDetails("12-06-2020", "BNS", "open"))
-
-  println("------------------------------")
-
-  /** best practices it to named Arguments, and they don't have to be in order  */
-  println(getStockPriceDetails( "11-06-2020", priceType = "open" , ticker = "TTM"))
+  /** Here's how we invoke a curried function with default values */
+  println(getStockPriceDetails()()(priceType = "high"))
+  println("-----------------------------------------")
+  println(getStockPriceDetails()(ticker = "MSFT")(priceType = "high"))
+  println("-----------------------------------------")
+  print(getStockPriceDetails(date = "12-06-2020")()(priceType = "high"))
 
 }

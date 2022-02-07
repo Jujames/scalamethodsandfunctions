@@ -2,7 +2,7 @@ package com.pluralsight.methodsandfunctions.ImplementingMethods
 
 import com.pluralsight.methodsandfunctions.ImplementingFunctions.StockRecord
 
-object NamedAndDefaultArguments extends App {
+object NamedAndDefaultArgumentsII extends App {
 
   val readFinanceData = () => {
     val source = io.Source.fromFile("src/main/resources/stockMarketData.csv")
@@ -16,7 +16,11 @@ object NamedAndDefaultArguments extends App {
 
   val records = readFinanceData()
 
-  def getStockPriceDetails(date: String, ticker: String, priceType: String):
+  /** For every parameter with a default argument Scala generates a
+   *  synthetic method which computes the default, missing parameters
+   *  are added to the argument list calls to these synthetic methods. */
+
+  def getStockPriceDetails(date: String = "11-06-2020", ticker: String, priceType: String):
   (String, String, Float) = {
 
     println(s"Accessing records for $date")
@@ -35,19 +39,7 @@ object NamedAndDefaultArguments extends App {
       case "low" => record.low
     }
 
-    /** Returns a Tuple */
     (record.date, record.ticker, price)
   }
-
-   /** Positional argument values are
-    *  assigned based on position or
-    *  order in which arguments are specified and
-    *  has to be returned in order */
-  println(getStockPriceDetails("12-06-2020", "BNS", "open"))
-
-  println("------------------------------")
-
-  /** best practices it to named Arguments, and they don't have to be in order  */
-  println(getStockPriceDetails( "11-06-2020", priceType = "open" , ticker = "TTM"))
-
-}
+  println(getStockPriceDetails(ticker = "BNS", priceType = "high"))
+ }

@@ -8,7 +8,7 @@ object FunctionLiteralAndPlaceholders extends App {
     for {
       line <- source.getLines().drop(1).toVector
       cols = line.split(",").map(_.trim)
-    } yield StockRecords(cols(0), cols(1).toFloat,
+    } yield googStockRecords(cols(0), cols(1).toFloat,
       cols(2).toFloat, cols(3).toFloat,
       cols(4).toFloat, cols(5).toFloat,
       cols(6).toDouble)
