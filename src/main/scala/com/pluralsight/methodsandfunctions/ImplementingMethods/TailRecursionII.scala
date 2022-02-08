@@ -1,11 +1,10 @@
 package com.pluralsight.methodsandfunctions.ImplementingMethods
 
 import com.pluralsight.methodsandfunctions.ImplementingFunctions.googStockRecords
-import com.pluralsight.methodsandfunctions.ImplementingMethods.RecursionII.{readFinanceData, rollingAverage}
 
 import scala.annotation.tailrec
 
-object TailRecursion extends App {
+object TailRecursionII extends App {
 
   def readFinanceData(): Vector[googStockRecords] = {
     val source = io.Source.fromFile("src/main/resources/googStocks.csv")
@@ -17,19 +16,13 @@ object TailRecursion extends App {
       rows(4).toFloat, rows(5).toFloat,
       rows(6).toDouble)
   }
-  /** A new stack frame will not be built for ach recursive call - all calls
-   *  will be executed in a single stack frame by simply updating the input
-   *  argument to the recursive call. */
-
-
-
-  @tailrec
+  /** Method without tail recursion which mean it can not be optimized */
+    @tailrec
   def rollingAverage(records: Vector[googStockRecords], numDays: Int): Unit = {
 
     if (records.length < numDays) {
-      println("Execution Complete!")
+      throw new Exception("Error so we can see the stack trace")
     } else {
-
       val averageClose = records.map(_.close).take(numDays).sum / numDays
 
       println(s"Rolling average close fo $numDays " +
@@ -37,14 +30,10 @@ object TailRecursion extends App {
 
       val updateRecords = records.drop(1)
 
-   /** In order to apply the tail recursion optimization,
-    *  the recursive call has to be the last call in a method */
+      /** In order to apply the tail recursion optimization,
+       *  the recursive call has to be the last call in a method */
       rollingAverage(updateRecords, numDays)
     }
   }
-  rollingAverage(readFinanceData(), 7)
-
-
-
-
+  rollingAverage(readFinanceData(), 10)
 }
